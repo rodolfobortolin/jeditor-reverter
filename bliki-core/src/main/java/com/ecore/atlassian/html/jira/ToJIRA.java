@@ -33,9 +33,9 @@ public class ToJIRA extends AbstractHTMLToWiki implements IHTMLToWiki {
 		TAG_MAP.put("th", new ThGCTag());
 		// TAG_MAP.put("img", new ImgTag());
 		TAG_MAP.put("p", new OpenCloseTag("\n", "\n\n"));
-		TAG_MAP.put("code", new OpenCloseTag("{{{", "}}}"));
-		TAG_MAP.put("blockquote", new OpenCloseTag("\n{quote}","{quote}"));
-		TAG_MAP.put("cite", new OpenCloseTag("\n??","??"));
+		TAG_MAP.put("code", new OpenCloseTag("\n{{", "}}\n"));
+		TAG_MAP.put("blockquote", new OpenCloseTag("\n{quote}","{quote}\n"));
+		TAG_MAP.put("cite", new OpenCloseTag("\n??","??\n"));
 		TAG_MAP.put("u", new OpenCloseTag("+", "+"));
 		TAG_MAP.put("del", new OpenCloseTag("~~", "~~"));
 		TAG_MAP.put("s", new OpenCloseTag("~~", "~~"));
@@ -43,7 +43,7 @@ public class ToJIRA extends AbstractHTMLToWiki implements IHTMLToWiki {
 		TAG_MAP.put("sup", new OpenCloseTag("^", "^"));
 		// TAG_MAP.put("div", new OpenCloseHTMLTag("\n<div", "\n</div>"));
 		// TAG_MAP.put("font", new OpenCloseHTMLTag("<font", "</font>"));
-		TAG_MAP.put("pre", new OpenCloseTag("\n{{{\n", "\n}}}\n"));
+		TAG_MAP.put("pre", new OpenCloseTag("\n{{", "}}\n"));
 		TAG_MAP.put("h1", new OpenCloseTag("\nh1. ", " \n", true));
 		TAG_MAP.put("h2", new OpenCloseTag("\nh2. ", " \n", true));
 		TAG_MAP.put("h3", new OpenCloseTag("\nh3. ", " \n", true));
