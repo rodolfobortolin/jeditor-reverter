@@ -25,6 +25,7 @@ public class ToJIRA extends AbstractHTMLToWiki implements IHTMLToWiki {
 		TAG_MAP.put("strong", new OpenCloseTag("*", "*"));
 		TAG_MAP.put("i", new OpenCloseTag("_", "_"));
 		TAG_MAP.put("em", new OpenCloseTag("_", "_"));
+		
 		TAG_MAP.put("table", new TableGCTag());
 		// TAG_MAP.put("caption", new CaptionTag());
 		TAG_MAP.put("tr", new TrGCTag());
@@ -33,9 +34,9 @@ public class ToJIRA extends AbstractHTMLToWiki implements IHTMLToWiki {
 		// TAG_MAP.put("img", new ImgTag());
 		TAG_MAP.put("p", new OpenCloseTag("\n", "\n\n"));
 		TAG_MAP.put("code", new OpenCloseTag("{{{", "}}}"));
-		// TAG_MAP.put("blockquote", new OpenCloseTag("<blockquote>",
-		// "</blockquote>"));
-		// TAG_MAP.put("u", new OpenCloseTag("<u>", "</u>"));
+		TAG_MAP.put("blockquote", new OpenCloseTag("\n{quote}","{quote}"));
+		TAG_MAP.put("cite", new OpenCloseTag("\n??","??"));
+		TAG_MAP.put("u", new OpenCloseTag("+", "+"));
 		TAG_MAP.put("del", new OpenCloseTag("~~", "~~"));
 		TAG_MAP.put("s", new OpenCloseTag("~~", "~~"));
 		TAG_MAP.put("sub", new OpenCloseTag(",,", ",,"));

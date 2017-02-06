@@ -25,7 +25,7 @@
 
 <p>&nbsp;</p>
 
-<p><span style="font-size: 24px;">My big name</span></p>
+
 
 <table border="1" cellpadding="1" cellspacing="1" style="width: 500px; border-collapse: collapse;">
 	<tbody>
@@ -49,3 +49,26 @@
 <p>&nbsp;</p>
 
 <p>&nbsp;</p>
+
+
+<p><cite>The Scream</cite> by Edward Munch. Painted in 1893.</p>
+
+<blockquote cite="http://www.worldwildlife.org/who/index.html">
+For 50 years, WWF has been protecting the future of nature.
+The world's leading conservation organization,
+WWF works in 100 countries and is supported by
+1.2 million members in the United States and
+close to 5 million globally.
+</blockquote>
+
+<p><span style="background-color:#FFFF8C;display:inline;width:auto;">grifado</span></p>
+
+<pre style="background-color:#F7F7F7;border:1px solid #D7D7D7;padding:.5em 1em .5em 1em;">preformatted</pre>
+
+<div class="jePanel_dashed" style="border-radius:.3em;border:1px dashed #B4B4B4;padding:.5em 1em .5em 1em;">
+<p>&nbsp;dashed</p>
+</div>
+
+<p style="color:#C0504D;font-family:serif;font-size:1.3em;font-variant:small-caps;font-weight:bold;text-decoration:underline;">Attention</p>
+
+
