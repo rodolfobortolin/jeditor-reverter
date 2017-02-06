@@ -36,7 +36,7 @@
  */
 
 package info.bliki.htmlcleaner;
-,
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -408,21 +408,21 @@ public class Utils {
 		return null;
 	}
 
-	public static void appendAmpersandEscapedAttribute(StringBuilder writer, String attributeName, Map<String, String> tagAtttributes) {
-		String attributeValue = tagAtttributes.get(attributeName);
-		if (attributeValue != null) {
-			if (writer.length() > 0) {
-				writer.append("&amp;");
-			}
-			writer.append(attributeName);
-			writer.append("=");
-			try {
-				writer.append(URLEncoder.encode(attributeValue, Connector.UTF8_CHARSET));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+//	public static void appendAmpersandEscapedAttribute(StringBuilder writer, String attributeName, Map<String, String> tagAtttributes) {
+//		String attributeValue = tagAtttributes.get(attributeName);
+//		if (attributeValue != null) {
+//			if (writer.length() > 0) {
+//				writer.append("&amp;");
+//			}
+//			writer.append(attributeName);
+//			writer.append("=");
+//			try {
+//				writer.append(URLEncoder.encode(attributeValue, Connector.UTF8_CHARSET));
+//			} catch (UnsupportedEncodingException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	public static void appendEscapedAttribute(Appendable writer, String attributeName, Map<String, String> tagAtttributes)
 			throws IOException {
