@@ -2,8 +2,6 @@ package info.bliki.wiki.tags;
 
 import info.bliki.htmlcleaner.TagNode;
 import info.bliki.htmlcleaner.Utils;
-import info.bliki.wiki.filter.ITextConverter;
-import info.bliki.wiki.model.IWikiModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -59,59 +57,6 @@ public class HTMLTag extends TagNode {
 		appendEscapedAttributes(buf, tagAtttributes);
 	}
 
-	public void renderHTML(ITextConverter converter, Appendable buf, IWikiModel model) throws IOException {
-		boolean newLines = false;
-		TagNode node = this;
-		String name = node.getName();
-		List<Object> children = node.getChildren();
-		if (children.size() == 0) {
-			// don't render empty tags (see Issue98)
-			if (!name.equals("a")) {
-				// because of section tags allow <a href=\"#Section..." />
-				return;
-			}
-		}
-
-		if (NEW_LINES) {
-			if (name.equals("div") || name.equals("p") || name.equals("li") || name.equals("td")) {
-				buf.append('\n');
-			} else if (name.equals("table") || name.equals("ul") || name.equals("ol") || name.equals("th") || name.equals("tr")
-					|| name.equals("pre")) {
-				buf.append('\n');
-				newLines = true;
-			}
-		}
-		buf.append('<');
-		buf.append(name);
-
-		Map<String, String> tagAtttributes = node.getAttributes();
-
-		appendAttributes(buf, tagAtttributes);
-
-		if (children.size() == 0) {
-			buf.append(" />");
-		} else {
-			buf.append('>');
-			if (newLines) {
-				buf.append('\n');
-			}
-			converter.nodesToText(children, buf, model);
-			if (newLines) {
-				buf.append('\n');
-			}
-			buf.append("</");
-			buf.append(node.getName());
-			buf.append('>');
-		}
-	}
-
-	public void renderHTMLWithoutTag(ITextConverter converter, Appendable buf, IWikiModel model) throws IOException {
-		TagNode node = this;
-		List<Object> children = node.getChildren();
-		if (children.size() != 0) {
-			converter.nodesToText(children, buf, model);
-		}
-	}
 
 	/**
 	 * Set if the text is rendered as a template. This method is a placeholder, it

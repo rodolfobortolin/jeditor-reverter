@@ -1,7 +1,5 @@
 package info.bliki.wiki.tags;
 
-import info.bliki.wiki.filter.ITextConverter;
-import info.bliki.wiki.model.IWikiModel;
 import info.bliki.wiki.tags.util.INoBodyParsingTag;
 
 import java.io.IOException;
@@ -212,13 +210,6 @@ public class NowikiTag extends HTMLTag implements INoBodyParsingTag {
 		}
 	}
 
-	@Override
-	public void renderHTML(ITextConverter converter, Appendable buf, IWikiModel model) throws IOException {
-		String content = getBodyString();
-		if (content != null && content.length() > 0) {
-			copyPre(content, buf, true);
-		}
-	}
 
 	@Override
 	public boolean isReduceTokenStack() {

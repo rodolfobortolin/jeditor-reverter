@@ -1,8 +1,5 @@
 package info.bliki.wiki.tags;
 
-import info.bliki.wiki.filter.ITextConverter;
-import info.bliki.wiki.model.Configuration;
-import info.bliki.wiki.model.IWikiModel;
 import info.bliki.wiki.tags.code.SourceCodeFormatter;
 import info.bliki.wiki.tags.util.INoBodyParsingTag;
 
@@ -27,48 +24,10 @@ public class SourceTag extends HTMLBlockTag implements INoBodyParsingTag {
 		super("source", null);
 	}
 
-	@Override
-	public void renderHTML(ITextConverter converter, Appendable writer, IWikiModel model) throws IOException {
-
-		String content = getBodyString();
-		if (content != null && content.length() > 0) {
-			Map<String, String> attributes = getAttributes();
-			String sourceCodeLanguage = attributes.get("lang");
-			if (sourceCodeLanguage == null) {
-				sourceCodeLanguage = getSourceType(content);
-			}
-			boolean show = model.showSyntax(sourceCodeLanguage);
-			if (show) {
-				String result;
-				SourceCodeFormatter formatter = model.getCodeFormatterMap().get(sourceCodeLanguage);
-				if (formatter != null) {
-					result = formatter.filter(content);
-					writer.append(SOURCE_START_1);
-					writer.append(sourceCodeLanguage);
-					writer.append(SOURCE_START_2);
-					writer.append(result);
-					// writer.append(replace(result));
-					writer.append(SOURCE_END);
-					return;
-				}
-			}
-			// show plain source code text
-			writer.append(SOURCE_START_1);
-			writer.append(sourceCodeLanguage);
-			writer.append(SOURCE_START_2);
-			NowikiTag.copyPre(content, writer, true);
-			writer.append(SOURCE_END);
-		}
-	}
-
+	
 	@Override
 	public boolean isReduceTokenStack() {
 		return true;
-	}
-
-	@Override
-	public String getParents() {
-		return Configuration.SPECIAL_BLOCK_TAGS;
 	}
 
 	/**
