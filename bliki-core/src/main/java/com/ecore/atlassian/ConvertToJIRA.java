@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import info.bliki.html.HTML2WikiConverter;
-import info.bliki.html.googlecode.ToJIRA;
+import com.ecore.atlassian.html.HTML2WikiConverter;
+import com.ecore.atlassian.html.jira.ToJIRA;
 
 public class ConvertToJIRA {
 
