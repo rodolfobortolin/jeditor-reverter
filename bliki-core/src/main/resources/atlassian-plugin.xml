@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="com.ecore.atlassian.jeditor-reverter" name="JEditor Reverter" plugins-version="2">
+  <plugin-info>
+    <version>1.0</version>
+    <vendor name="e-Core" url="www.e-core.com"/>
+  </plugin-info>
+  <servlet name="JEditor Reverter" key="issue-jeditor" class="com.ecore.atlassian.Servlet">
+    <description key="issue-jeditor.description">JEditor Reverter</description>
+    <url-pattern>/jeditor-reverter</url-pattern>
+  </servlet>
+  <component-import key="velocityTemplateRenderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer"/>
+</atlassian-plugin>
