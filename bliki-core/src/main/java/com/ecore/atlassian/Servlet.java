@@ -14,17 +14,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.atlassian.jira.ComponentManager;
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.bc.issue.IssueService.IssueResult;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.event.type.EventDispatchOption;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.IssueInputParameters;
 import com.atlassian.jira.issue.MutableIssue;
+import com.atlassian.jira.issue.index.IndexException;
+import com.atlassian.jira.issue.index.IssueIndexManager;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.jql.builder.JqlClauseBuilder;
 import com.atlassian.jira.jql.builder.JqlQueryBuilder;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.util.ImportUtils;
 import com.atlassian.jira.web.bean.PagerFilter;
 import com.ecore.atlassian.html.HTML2WikiConverter;
 import com.ecore.atlassian.html.jira.ToJIRA;
@@ -52,91 +57,57 @@ public class Servlet extends HttpServlet {
 		out.println("<body>");
 
 		String projectKey = request.getParameter("project");
+		int start = Integer.parseInt(request.getParameter("start"));
+		int size = Integer.parseInt(request.getParameter("size"));
+		long customField = Integer.parseInt(request.getParameter("customFieldId"));
 
-		if (projectKey != null
-				&& ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase(projectKey) != null) {
+		if (projectKey != null && ComponentAccessor.getProjectManager().getProjectObjByKeyIgnoreCase(projectKey) != null) {
 
 			if (ComponentAccessor.getGroupManager().isUserInGroup(user, "jira-administrators")) {
 
-				List<Issue> issues = getIssues(request, projectKey);
+				List<Issue> issues = getIssues(request, projectKey, start, size);
 
 				out.println("<table style=\"width:100%;border:2px;border-style: solid;border-color: black;\">");
 				out.println("  <tbody> ");
 
 				for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+					
 					Issue issue = (Issue) iterator.next();
 
-					out.println("  <tr><td style=\"border-style: solid;\">   <b>Issue: " + issue.getKey()
-							+ "</b> <br><br> Old Description:<br><br> <xmp>" + issue.getDescription()
-							+ "</xmp> <br>  </td> ");
-
-					if (issue.getDescription() != null) {
+					String text = (String) issue.getCustomFieldValue(ComponentAccessor.getCustomFieldManager().getCustomFieldObject(customField));
+					
+					out.println("  <tr><td style=\"border-style: solid;\">   <b>Issue: " + issue.getKey() + "</b> Old Description:<br> <xmp style=\"width: 800px;overflow-x: scroll;\">" + text + "</xmp> </td> ");
+					
+					if (text != null) {
 
 						HTML2WikiConverter conv = new HTML2WikiConverter();
-						conv.setInputHTML(issue.getDescription());
+						conv.setInputHTML(text);
 						String convertedText = conv.toWiki(new ToJIRA(true, true));
 
 						if ("y".equals(request.getParameter("edit"))) {
 
-							log.error("EDIT YES!");
-
-							MutableIssue mutableIssue = ComponentAccessor.getIssueManager()
-									.getIssueObject(issue.getId());
+							MutableIssue mutableIssue = ComponentAccessor.getIssueManager().getIssueObject(issue.getId());
 
 							log.error("Trying to change " + mutableIssue.getKey());
 
-							IssueInputParameters issueInputParameters = issueService.newIssueInputParameters();
-							issueInputParameters.setDescription(convertedText);
-							issueInputParameters.setSkipScreenCheck(true);
-							issueInputParameters.setRetainExistingValuesWhenParameterNotProvided(true, true);
-							IssueService.UpdateValidationResult result = issueService.validateUpdate(user, mutableIssue.getId(), issueInputParameters);
+							mutableIssue.setCustomFieldValue(ComponentAccessor.getCustomFieldManager().getCustomFieldObject(customField), convertedText);
 
-							if (result.isValid()) {
-								
-								IssueResult updateResult = issueService.update(user, result);
-								
-								if (!updateResult.isValid()) {
-									
-									log.error("ISSUE has NOT been updated. Errors: {}\n", updateResult.getErrorCollection().toString());
+							ComponentAccessor.getIssueManager().updateIssue(user, mutableIssue, EventDispatchOption.DO_NOT_DISPATCH, false);
 
-									out.println(" <td style=\"border-style: solid;\">");
-
-									Map<String, String> map = result.getErrorCollection().getErrors();
-									for (Map.Entry<String, String> entry : map.entrySet()) {
-										out.println(entry.getKey() + " / " + entry.getValue() + "<br>");
-									}
-
-									out.println(" </td></tr>");
-
-								} else {
-									
-									log.error("ISSUE has been updated.\n");
-									out.println(" <td style=\"border-style: solid;\">   Markup: <pre>" + convertedText + "</pre> </td></tr>");
-									
-								}
-							} else {
-								
-								log.error("ISSUE has NOT been updated. Errors: {}\n", result.getErrorCollection().toString());
-
-								out.println(" <td style=\"border-style: solid;\">");
-
-								Map<String, String> map = result.getErrorCollection().getErrors();
-								for (Map.Entry<String, String> entry : map.entrySet()) {
-									out.println(entry.getKey() + " / " + entry.getValue() + "<br>");
-								}
-
-								out.println(" </td></tr>");
-
-							}
-
+							out.println(" <td style=\"border-style: solid;\">   Markup: <pre style=\"width: 800px;overflow-x: scroll;\">" + convertedText + "</pre> </td></tr>");
+							
 						} else {
-							out.println(" <td style=\"border-style: solid;\">   Markup: <pre>" + convertedText
-									+ "</pre> </td></tr>");
+							
+							out.println(" <td style=\"border-style: solid;\">   Markup: <pre style=\"width: 800px;overflow-x: scroll;\">" + convertedText + "</pre> </td></tr>");
+
 						}
 
 					} else {
-						out.println(" <td style=\"border-style: solid;\">   No Description    </td></tr>");
+						
+						out.println(" <td style=\"border-style: solid;\">   No value in this field </td></tr>");
+						
 					}
+
 				}
 
 				out.println("</tbody></table> ");
@@ -154,13 +125,13 @@ public class Servlet extends HttpServlet {
 
 	}
 
-	private List<Issue> getIssues(HttpServletRequest req, String projectKey) {
+	private List<Issue> getIssues(HttpServletRequest req, String projectKey, int start, int size) {
 
 		JqlClauseBuilder jqlClauseBuilder = JqlQueryBuilder.newClauseBuilder();
 
 		com.atlassian.query.Query query = jqlClauseBuilder.project(projectKey).buildQuery();
 
-		PagerFilter pagerFilter = PagerFilter.getUnlimitedFilter();
+		PagerFilter pagerFilter = PagerFilter.newPageAlignedFilter(start, size);
 		com.atlassian.jira.issue.search.SearchResults searchResults = null;
 		try {
 
