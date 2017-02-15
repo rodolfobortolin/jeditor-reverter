@@ -5,9 +5,13 @@
     <version>1.0</version>
     <vendor name="e-Core" url="www.e-core.com"/>
   </plugin-info>
-  <servlet name="JEditor Reverter" key="issue-jeditor" class="com.ecore.atlassian.Servlet">
+  <servlet name="JEditor Reverter" key="issue-jeditor" class="com.ecore.atlassian.HtmlToWikiServlet">
     <description key="issue-jeditor.description">JEditor Reverter</description>
     <url-pattern>/jeditor-reverter</url-pattern>
+  </servlet>
+  <servlet name="Summary Apender" key="issue-summary-apender" class="com.ecore.atlassian.SummaryKeyApenderServlet">
+    <description key="issue-jeditor.description">JEditor Reverter</description>
+    <url-pattern>/summary-modifier</url-pattern>
   </servlet>
   <component-import key="velocityTemplateRenderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer"/>
 </atlassian-plugin>
