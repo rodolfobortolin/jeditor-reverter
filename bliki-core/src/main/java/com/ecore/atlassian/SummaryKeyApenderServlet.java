@@ -50,6 +50,7 @@ public class SummaryKeyApenderServlet extends HttpServlet {
 	}
 	
 	//Voltei com o comentario.
+	//Acrescentado um comentário abaixo
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
