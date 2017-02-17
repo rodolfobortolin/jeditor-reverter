@@ -48,6 +48,8 @@ public class SummaryKeyApenderServlet extends HttpServlet {
 		this.searchService = searchService;
 		this.issueService = issueService;
 	}
+	
+	//Voltei com o comentario.
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
