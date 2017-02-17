@@ -49,9 +49,9 @@ public class SummaryKeyApenderServlet extends HttpServlet {
 		this.issueService = issueService;
 	}
 	
-	//Voltei com o comentario.
-	//Acrescentado um comentário abaixo
-	//Vai pra master
+	//Relatorio 1
+	//Relatorio 2
+	//Relatorio 3
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
