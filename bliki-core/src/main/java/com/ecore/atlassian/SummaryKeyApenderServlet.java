@@ -48,8 +48,7 @@ public class SummaryKeyApenderServlet extends HttpServlet {
 		this.searchService = searchService;
 		this.issueService = issueService;
 	}
-	
-	//Relatorio 1
+
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
