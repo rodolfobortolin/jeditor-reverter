@@ -49,8 +49,6 @@ public class SummaryKeyApenderServlet extends HttpServlet {
 		this.issueService = issueService;
 	}
 
-	//comment. opa
-
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
